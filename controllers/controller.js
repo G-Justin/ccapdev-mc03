@@ -13,8 +13,10 @@ const controller = {
             current stored in the database.
     */
     getIndex: function(req, res) {
-        // your code here
-        res.render('home'); // This is to load the page initially
+        db.findMany(User, null, null, function(result) {
+            res.render('home', {userCards: result});
+        });
+        // This is to load the page initially
     },
 
     /*
@@ -35,7 +37,19 @@ const controller = {
             list of contacts in `home.hbs`.
     */
     getAdd: function(req, res) {
-        // your code here
+       var name = req.query.name;
+       var number = req.query.number;
+
+       var user = {
+           name: name,
+           number: number
+       };
+
+       db.insertOne(User, user, function(flag) {
+           if (flag) {
+               res.render("partials/card.hbs", {name: name, number: number});
+           }
+       });
     },
 
     /*

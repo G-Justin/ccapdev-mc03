@@ -31,7 +31,23 @@ $(document).ready(function () {
             The name and the number fields are reset to empty values.
     */
     $('#submit').click(function () {
-        // your code here
+        var name = $("#name").val();
+        var number = $("#number").val();
+
+        var error = $("#error");
+
+        if (name === "" || number === "") {
+            error.text("All fields must be filled!");
+            return;
+        }
+
+        $("#name").val("");
+        $("#number").val("");
+
+        $.get("/add", {name: name, number: number}, function(data) {
+            $("#contacts").append(data);
+        });
+
     });
 
     /*
